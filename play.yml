@@ -1,7 +1,27 @@
 - hosts: localhost
+  vars:
+    - github_token: "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"
+    - ansible_python_interpreter: "/usr/bin/python3" 
   tasks:
-    - name: Test that my module works
+    - name: Create a github Repo
       github_repo:
+        github_auth_key:  "{{github_token}}"
+        username: "c-poteat"
+        name: "Hello-World"
+        description: "This repo was created using Ansible :)"
+        private: yes
+        has_issues: no
+        has_wiki: no
+        has_downloads: no
+        state: present
+      tags:
+        - add
+    - name: Delete GitHub Repo
+      github_repo:
+        github_auth_key:  "{{github_token}}"
+        username: "c-poteat"
+        name: "Hello-World"
+        state: absent
+      tags: 
+        - del
       register: result
-
-    - debug: var=result
